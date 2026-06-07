@@ -1,0 +1,21 @@
+.gradle/
+build/
+.idea/
+*.iml
+local.properties
+captures/
+.externalNativeBuild/
+.cxx/
+*.apk
+*.aab
+*.keystore
+*.jks
+key.properties
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Secrets — never commit
+secrets.properties
+*.env

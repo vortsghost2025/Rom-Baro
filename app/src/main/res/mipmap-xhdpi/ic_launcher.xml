@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Placeholder vector launcher. Replace with adaptive icon assets before shipping. -->
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="oval">
+    <solid android:color="@color/brand_primary" />
+    <size android:width="48dp" android:height="48dp" />
+</shape>
