@@ -63,7 +63,7 @@ class XtreamApi @Inject constructor(
             .execute()
             .use { it.body?.string().orEmpty() }
         if (body.isBlank()) return emptyMap()
-        val list: List<XtCategory> = runCatching { json.decodeFromString(body) }.getOrDefault(emptyList())
+        val list: List<XtCategory> = runCatching { json.decodeFromString<List<XtCategory>>(body) }.getOrDefault(emptyList())
         return list.associate { it.categoryId to it.categoryName }
     }
 

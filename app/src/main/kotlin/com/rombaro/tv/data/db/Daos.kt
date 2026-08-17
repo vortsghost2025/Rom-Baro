@@ -79,6 +79,39 @@ interface ProgrammeDao {
         LIMIT 1
     """)
     suspend fun nowPlaying(epgId: String, nowMs: Long): ProgrammeEntity?
+
+    @Query("""
+        SELECT * FROM programmes
+        WHERE epgChannelId IN (:epgIds)
+          AND endMs >= :nowMs
+        ORDER BY startMs ASC
+    """)
+    fun observeUpcomingForChannels(epgIds: List<String>, nowMs: Long): Flow<List<ProgrammeEntity>>
+
+    @Transaction
+    suspend fun replaceProgrammesForChannelsAndWindow(
+        epgChannelIds: List<String>,
+        startMsFrom: Long,
+        startMsTo: Long,
+        newProgrammes: List<ProgrammeEntity>
+    ) {
+        // Delete existing programmes for the specified channels and time window
+        deleteProgrammesForChannelsAndWindow(epgChannelIds, startMsFrom, startMsTo)
+        // Insert new programmes
+        insertAll(newProgrammes)
+    }
+
+    @Query("""
+        DELETE FROM programmes
+        WHERE epgChannelId IN (:epgChannelIds)
+          AND startMs >= :startMsFrom
+          AND startMs < :startMsTo
+    """)
+    suspend fun deleteProgrammesForChannelsAndWindow(
+        epgChannelIds: List<String>,
+        startMsFrom: Long,
+        startMsTo: Long
+    )
 }
 
 @Dao
