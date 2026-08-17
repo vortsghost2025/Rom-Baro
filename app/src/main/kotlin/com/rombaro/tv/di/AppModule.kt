@@ -40,4 +40,11 @@ object AppModule {
     @Provides fun channelDao(db: AppDatabase) = db.channels()
     @Provides fun programmeDao(db: AppDatabase) = db.programmes()
     @Provides fun favoriteDao(db: AppDatabase) = db.favorites()
+
+    @Provides
+    fun provideDemoRepository(
+        @ApplicationContext ctx: Context,
+        db: AppDatabase,
+    ): com.rombaro.tv.data.repo.DemoRepository =
+        com.rombaro.tv.data.repo.DemoRepository(ctx, db.playlists(), db.channels(), db.programmes())
 }

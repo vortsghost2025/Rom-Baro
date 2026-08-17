@@ -1,0 +1,25 @@
+#EXTM3U
+
+#EXTINF:-1 tvg-id="demo.cinema" group-title="Movies",Demo Cinema
+https://www.w3schools.com/html/mov_bbb.mp4
+
+#EXTINF:-1 tvg-id="demo.animation" group-title="Animation",Demo Animation
+https://samplelib.com/lib/preview/mp4/sample-15s.mp4
+
+#EXTINF:-1 tvg-id="demo.scifi" group-title="Sci-Fi Shorts",Demo Sci-Fi Short
+https://demo.unified-streaming.com/k8s/features/stable/video/tears-of-steel/tears-of-steel.ism/.m3u8
+
+#EXTINF:-1 tvg-id="demo.mux" group-title="Test Streams",Demo Mux Test
+https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8
+
+#EXTINF:-1 tvg-id="demo.akamai" group-title="Test Streams",Demo Akamai Test
+https://cph-p2p-msl.akamaized.net/hls/live/2000341/test/master.m3u8
+
+#EXTINF:-1 tvg-id="demo.showcase" group-title="Showcase",Demo Showcase
+https://samplelib.com/lib/preview/mp4/sample-5s.mp4
+
+#EXTINF:-1 tvg-id="demo.classics" group-title="Movies",Demo Classics
+https://www.w3schools.com/html/movie.mp4
+
+#EXTINF:-1 tvg-id="demo.kids" group-title="Kids",Demo Kids
+https://samplelib.com/lib/preview/mp4/sample-30s.mp4

@@ -28,6 +28,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.rombaro.tv.data.repo.DemoRepository
 import com.rombaro.tv.data.repo.PlaylistRepository
 import com.rombaro.tv.domain.Playlist
 import com.rombaro.tv.domain.PlaylistType
@@ -84,8 +85,10 @@ private fun SetupScreen(vm: SetupViewModel = hiltViewModel(), onSaved: () -> Uni
             Configuration.UI_MODE_TYPE_TELEVISION
     val keyboardController = LocalSoftwareKeyboardController.current
     val focusManager = LocalFocusManager.current
+    val loadingDemo by vm.loadingDemo.collectAsState()
 
     val nameFocus = remember { FocusRequester() }
+    val demoFocus = remember { FocusRequester() }
     val xtreamChipFocus = remember { FocusRequester() }
     val m3uChipFocus = remember { FocusRequester() }
     val m3uUrlFocus = remember { FocusRequester() }
@@ -107,6 +110,16 @@ private fun SetupScreen(vm: SetupViewModel = hiltViewModel(), onSaved: () -> Uni
                     m3uChipFocus.requestFocus()
                 }
             }
+
+            OutlinedButton(
+                enabled = !loadingDemo,
+                onClick = { vm.loadDemo(onSaved) },
+                modifier = Modifier.fillMaxWidth()
+                    .focusRequester(demoFocus)
+                    .focusProperties {
+                        down = nameFocus
+                    }
+            ) { Text(if (loadingDemo) "Loading Demo…" else "Try Demo") }
             OutlinedTextField(
                 name, { name = it },
                 label = { Text("Display name") },
@@ -282,9 +295,13 @@ private fun TypeChip(
 @HiltViewModel
 class SetupViewModel @Inject constructor(
     private val repo: PlaylistRepository,
+    private val demoRepo: DemoRepository,
 ) : ViewModel() {
     private val _saving = MutableStateFlow(false)
     val saving: StateFlow<Boolean> = _saving.asStateFlow()
+
+    private val _loadingDemo = MutableStateFlow(false)
+    val loadingDemo: StateFlow<Boolean> = _loadingDemo.asStateFlow()
 
     fun save(p: Playlist, onDone: () -> Unit) {
         viewModelScope.launch {
@@ -294,6 +311,18 @@ class SetupViewModel @Inject constructor(
                 onDone()
             } finally {
                 _saving.value = false
+            }
+        }
+    }
+
+    fun loadDemo(onDone: () -> Unit) {
+        viewModelScope.launch {
+            _loadingDemo.value = true
+            try {
+                demoRepo.loadDemo()
+                onDone()
+            } finally {
+                _loadingDemo.value = false
             }
         }
     }
